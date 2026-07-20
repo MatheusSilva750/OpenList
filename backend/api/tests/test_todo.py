@@ -115,7 +115,8 @@ def test_auth_middleware_missing_sub(rf, mocker):
 def test_model_str():
     user = User.objects.create(username="usr")
     category = Category.objects.create(name="Trabalho", user=user)
-    task = Task.objects.create(title="Fazer café", user=user, category=category)
+    task = Task.objects.create(title="Fazer café", user=user)
+    task.categories.add(category)
 
     assert str(category) == "Trabalho"
     assert str(task) == "Fazer café"
@@ -198,8 +199,10 @@ class TestTaskAPI:
         cat1 = Category.objects.create(name="Cat 1", user=user)
         cat2 = Category.objects.create(name="Cat 2", user=user)
 
-        t1 = Task.objects.create(title="Task A", completed=False, category=cat1, user=user)
-        t2 = Task.objects.create(title="Task B", completed=True, category=cat2, user=user)
+        t1 = Task.objects.create(title="Task A", completed=False, user=user)
+        t1.categories.add(cat1)
+        t2 = Task.objects.create(title="Task B", completed=True, user=user)
+        t2.categories.add(cat2)
 
         url = reverse('task-list')
 
@@ -229,11 +232,11 @@ class TestTaskAPI:
         url = reverse('task-list')
         data = {
             "title": "Task com categoria errada",
-            "category": other_cat.id
+            "categories": [other_cat.id]
         }
         response = client.post(url, data)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert "Category does not belong" in str(response.data)
+        assert "does not belong" in str(response.data)
 
     def test_create_task_valid(self, auth_client):
         client, user = auth_client
@@ -242,12 +245,12 @@ class TestTaskAPI:
         url = reverse('task-list')
         data = {
             "title": "Task Válida",
-            "category": cat.id,
+            "categories": [cat.id],
             "description": "Uma descrição simples."
         }
         response = client.post(url, data)
         assert response.status_code == status.HTTP_201_CREATED
-        assert Task.objects.filter(title="Task Válida", user=user, category=cat).exists()
+        assert Task.objects.filter(title="Task Válida", user=user, categories=cat).exists()
 
     def test_toggle_task(self, auth_client):
         client, user = auth_client
