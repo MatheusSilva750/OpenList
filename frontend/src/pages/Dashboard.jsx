@@ -7,35 +7,30 @@ import TaskList from '../components/dashboard/TaskList';
 import TaskModal from '../components/dashboard/modals/TaskModal';
 import CategoryModal from '../components/dashboard/modals/CategoryModal';
 import ShareTaskModal from '../components/dashboard/modals/ShareTaskModal';
+import { Box, Container } from '@mui/material';
 
 export default function Dashboard({ user, onLogout, navigateToDocs }) {
   return (
     <DashboardProvider user={user} onLogout={onLogout} navigateToDocs={navigateToDocs}>
-      <div className="min-h-screen flex flex-col">
-        {/* Header Navbar */}
+      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', bgcolor: 'background.default' }}>
         <Header />
 
-        {/* Main Layout Grid */}
-        <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          
-          {/* Categories Sidebar */}
-          <Sidebar />
+        <Container component="main" maxWidth="xl" sx={{ flexGrow: 1, py: { xs: 2, md: 3 } }}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' }, gap: 3 }}>
+            
+            <Sidebar />
 
-          {/* Tasks List Content */}
-          <section className="md:col-span-2 lg:col-span-3 flex flex-col gap-4">
-            {/* Action Bar (Search & Filter) */}
-            <TaskFilters />
+            <Box sx={{ gridColumn: { md: 'span 2', lg: 'span 3' }, display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <TaskFilters />
+              <TaskList />
+            </Box>
+          </Box>
+        </Container>
 
-            {/* Tasks Grid & Pagination */}
-            <TaskList />
-          </section>
-        </main>
-
-        {/* Modals */}
         <TaskModal />
         <CategoryModal />
         <ShareTaskModal />
-      </div>
+      </Box>
     </DashboardProvider>
   );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDashboard } from './DashboardContext';
 import { Plus, Trash2 } from 'lucide-react';
+import { Paper, Typography, Box, IconButton, Chip, CircularProgress, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 
 export default function Sidebar() {
   const { 
@@ -15,69 +16,108 @@ export default function Sidebar() {
   } = useDashboard();
 
   return (
-    <section className="md:col-span-1 flex flex-col gap-4">
-      <div className="glass-card p-4 md:p-5 rounded-2xl border border-slate-800 flex flex-col gap-4 overflow-hidden">
-        <div className="flex justify-between items-center px-1 md:px-0">
-          <h3 className="font-semibold text-white tracking-wide">Categorias</h3>
-          <button
+    <Box sx={{ gridColumn: { md: 'span 1' } }}>
+      <Paper elevation={2} sx={{ p: 2, borderRadius: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1" fontWeight="bold">
+            Categorias
+          </Typography>
+          <IconButton
+            size="small"
+            color="primary"
             onClick={() => setShowCatModal(true)}
-            className="p-1.5 bg-primary-600/20 text-primary-400 rounded-lg border border-primary-500/20 hover:bg-primary-600 hover:text-white transition-all flex-shrink-0"
-            title="Adicionar Categoria"
+            sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.dark' } }}
           >
             <Plus size={16} />
-          </button>
-        </div>
+          </IconButton>
+        </Box>
 
         {loadingCats ? (
-          <div className="text-slate-500 text-sm text-center py-4">Carregando categorias...</div>
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+            <CircularProgress size={24} />
+          </Box>
         ) : (
-          <div className="flex flex-row md:flex-col gap-2 md:gap-1 overflow-x-auto md:overflow-visible pb-2 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            <button
-              onClick={() => { setSelectedCat(''); setPage(1); }}
-              className={`flex-shrink-0 md:w-full text-left px-4 md:px-3 py-2 rounded-xl text-sm transition-all flex justify-between items-center gap-2 ${
-                selectedCat === '' 
-                  ? 'bg-primary-600 text-white font-medium shadow-lg shadow-primary-600/20' 
-                  : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 border border-slate-800/50 md:border-transparent'
-              }`}
+          <>
+            {/* Mobile View: Horizontal Scroll with Chips */}
+            <Box 
+              sx={{ 
+                display: { xs: 'flex', md: 'none' }, 
+                flexDirection: 'row', 
+                gap: 1, 
+                overflowX: 'auto', 
+                pb: 1,
+                scrollbarWidth: 'none',
+                '&::-webkit-scrollbar': { display: 'none' } 
+              }}
             >
-              <span>Todas</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-950/40">{totalCount}</span>
-            </button>
-
-            {categories.map(cat => (
-              <div 
-                key={cat.id} 
-                className={`group flex items-center justify-between gap-1 flex-shrink-0 md:w-full rounded-xl border md:border-transparent transition-all ${
-                  selectedCat === cat.id ? 'border-primary-600/50 bg-primary-600/10 md:bg-transparent md:border-transparent' : 'border-slate-800/50 hover:border-slate-700/80 md:border-transparent md:hover:border-transparent'
-                }`}
-              >
-                <button
+              <Chip
+                label={`Todas (${totalCount})`}
+                clickable
+                color={selectedCat === '' ? 'primary' : 'default'}
+                onClick={() => { setSelectedCat(''); setPage(1); }}
+                sx={{ fontWeight: selectedCat === '' ? 'bold' : 'normal' }}
+              />
+              {categories.map(cat => (
+                <Chip
+                  key={cat.id}
+                  label={cat.name}
+                  clickable
+                  color={selectedCat === cat.id ? 'primary' : 'default'}
                   onClick={() => { setSelectedCat(cat.id); setPage(1); }}
-                  className={`text-left px-4 md:px-3 py-2 rounded-l-xl md:rounded-xl text-sm transition-all truncate max-w-[140px] md:max-w-none md:flex-1 ${
-                    selectedCat === cat.id 
-                      ? 'text-primary-400 md:bg-primary-600 md:text-white md:font-medium md:shadow-lg md:shadow-primary-600/20' 
-                      : 'text-slate-400 hover:text-slate-200 md:hover:bg-slate-800/50'
-                  }`}
-                  title={cat.name}
-                >
-                  {cat.name}
-                </button>
-                <button
-                  onClick={() => handleDeleteCategory(cat.id)}
-                  className="p-2 mr-1 md:mr-0 text-slate-500 hover:text-red-400 transition-all rounded-lg md:opacity-0 md:group-hover:opacity-100 flex-shrink-0"
-                  title="Excluir Categoria"
-                >
-                  <Trash2 size={14} />
-                </button>
-              </div>
-            ))}
+                  onDelete={() => handleDeleteCategory(cat.id)}
+                  deleteIcon={<Trash2 size={14} />}
+                  sx={{ fontWeight: selectedCat === cat.id ? 'bold' : 'normal' }}
+                />
+              ))}
+              {categories.length === 0 && (
+                <Typography variant="caption" color="text.secondary" sx={{ py: 1 }}>
+                  Nenhuma categoria ainda.
+                </Typography>
+              )}
+            </Box>
 
-            {categories.length === 0 && (
-              <p className="text-slate-500 text-xs py-4 text-center w-full">Nenhuma categoria criada ainda.</p>
-            )}
-          </div>
+            {/* Desktop View: Vertical List */}
+            <List sx={{ display: { xs: 'none', md: 'block' }, p: 0, gap: 0.5, display: 'flex', flexDirection: 'column' }}>
+              <ListItem disablePadding>
+                <ListItemButton 
+                  selected={selectedCat === ''}
+                  onClick={() => { setSelectedCat(''); setPage(1); }}
+                  sx={{ borderRadius: 2 }}
+                >
+                  <ListItemText primary="Todas" primaryTypographyProps={{ variant: 'body2', fontWeight: selectedCat === '' ? 'bold' : 'normal' }} />
+                  <Chip size="small" label={totalCount} />
+                </ListItemButton>
+              </ListItem>
+
+              {categories.map(cat => (
+                <ListItem 
+                  key={cat.id} 
+                  disablePadding
+                  secondaryAction={
+                    <IconButton edge="end" aria-label="delete" size="small" color="error" onClick={() => handleDeleteCategory(cat.id)}>
+                      <Trash2 size={16} />
+                    </IconButton>
+                  }
+                >
+                  <ListItemButton 
+                    selected={selectedCat === cat.id}
+                    onClick={() => { setSelectedCat(cat.id); setPage(1); }}
+                    sx={{ borderRadius: 2 }}
+                  >
+                    <ListItemText primary={cat.name} primaryTypographyProps={{ variant: 'body2', fontWeight: selectedCat === cat.id ? 'bold' : 'normal', noWrap: true, sx: { pr: 4 } }} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+              
+              {categories.length === 0 && (
+                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
+                  Nenhuma categoria criada ainda.
+                </Typography>
+              )}
+            </List>
+          </>
         )}
-      </div>
-    </section>
+      </Paper>
+    </Box>
   );
 }

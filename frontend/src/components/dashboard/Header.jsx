@@ -1,44 +1,56 @@
 import React from 'react';
 import { useDashboard } from './DashboardContext';
 import { LogOut, FileText, User, CheckCircle2 } from 'lucide-react';
+import { AppBar, Toolbar, Typography, Box, Button, IconButton, Divider, Tooltip } from '@mui/material';
 
 export default function Header() {
   const { user, onLogout, navigateToDocs } = useDashboard();
 
   return (
-    <header className="glass border-b border-slate-800 sticky top-0 z-40 px-4 md:px-6 py-4 flex flex-wrap justify-between items-center gap-2 md:gap-4">
-      <div className="flex items-center gap-2">
-        <div className="p-1.5 md:p-2 bg-primary-600/20 rounded-xl text-primary-400 border border-primary-500/20 flex-shrink-0">
-          <CheckCircle2 size={20} className="md:w-6 md:h-6" />
-        </div>
-        <h1 className="text-lg md:text-xl font-bold tracking-tight text-white">OpenList</h1>
-      </div>
+    <AppBar position="sticky" elevation={1} sx={{ bgcolor: 'background.paper', color: 'text.primary', backgroundImage: 'none' }}>
+      <Toolbar>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexGrow: 1 }}>
+          <Box sx={{ p: 1, bgcolor: 'primary.main', borderRadius: 2, color: 'primary.contrastText', display: 'flex' }}>
+            <CheckCircle2 size={24} />
+          </Box>
+          <Typography variant="h6" fontWeight="bold" letterSpacing={1}>
+            OpenList
+          </Typography>
+        </Box>
 
-      <div className="flex items-center gap-2 md:gap-4">
-        <button
-          onClick={navigateToDocs}
-          className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors text-sm"
-          title="Documentação API"
-        >
-          <FileText size={16} />
-          <span className="hidden sm:inline">API</span>
-        </button>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
+          <Button
+            onClick={navigateToDocs}
+            startIcon={<FileText size={18} />}
+            color="inherit"
+            sx={{ textTransform: 'none', display: { xs: 'none', sm: 'flex' } }}
+          >
+            API
+          </Button>
+          <Tooltip title="Documentação API">
+             <IconButton onClick={navigateToDocs} color="inherit" sx={{ display: { xs: 'flex', sm: 'none' } }}>
+               <FileText size={20} />
+             </IconButton>
+          </Tooltip>
 
-        <div className="h-6 w-px bg-slate-800 hidden sm:block"></div>
+          <Divider orientation="vertical" flexItem variant="middle" sx={{ display: { xs: 'none', sm: 'block' } }} />
 
-        <div className="flex items-center gap-2 text-slate-300 text-sm" title={user?.email}>
-          <User size={16} className="text-primary-400" />
-          <span className="hidden sm:inline max-w-[100px] md:max-w-[150px] truncate">{user?.email}</span>
-        </div>
+          <Tooltip title={user?.email || ''}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
+              <User size={18} />
+              <Typography variant="body2" sx={{ maxWidth: { xs: 100, md: 150 }, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: { xs: 'none', sm: 'block' } }}>
+                {user?.email}
+              </Typography>
+            </Box>
+          </Tooltip>
 
-        <button
-          onClick={onLogout}
-          className="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all ml-1 md:ml-0"
-          title="Sair"
-        >
-          <LogOut size={18} />
-        </button>
-      </div>
-    </header>
+          <Tooltip title="Sair">
+            <IconButton onClick={onLogout} color="error" sx={{ ml: { xs: 0, sm: 1 } }}>
+              <LogOut size={20} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }

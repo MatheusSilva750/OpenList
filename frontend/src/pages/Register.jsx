@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { KeyRound, Mail, Loader2, ListTodo } from 'lucide-react';
+import { KeyRound, Mail, ListTodo } from 'lucide-react';
+import { 
+  Box, 
+  Container, 
+  Paper, 
+  Typography, 
+  TextField, 
+  Button, 
+  Alert, 
+  Link, 
+  InputAdornment, 
+  CircularProgress 
+} from '@mui/material';
 
 export default function Register({ onAuthSuccess, navigateToLogin }) {
   const [email, setEmail] = useState('');
@@ -52,116 +64,112 @@ export default function Register({ onAuthSuccess, navigateToLogin }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full glass p-8 rounded-2xl shadow-2xl relative overflow-hidden">
-        
-        {/* Decorative background glow */}
-        <div className="absolute -top-24 -left-24 w-48 h-48 bg-primary-600/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl"></div>
-
-        <div className="text-center mb-8 relative z-10">
-          <div className="inline-flex p-3 bg-primary-600/20 rounded-2xl mb-4 text-primary-400 border border-primary-500/20">
+    <Container component="main" maxWidth="xs" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+      <Paper elevation={6} sx={{ p: 4, width: '100%', borderRadius: 3, bgcolor: 'background.paper' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
+          <Box sx={{ p: 1.5, bgcolor: 'primary.main', borderRadius: 2, color: 'primary.contrastText', mb: 2 }}>
             <ListTodo size={32} />
-          </div>
-          <h2 className="text-3xl font-extrabold tracking-tight text-white">Criar Conta</h2>
-          <p className="mt-2 text-sm text-slate-400">Cadastre-se na plataforma para gerenciar tarefas</p>
-        </div>
+          </Box>
+          <Typography component="h1" variant="h4" fontWeight="bold">
+            Criar Conta
+          </Typography>
+          <Typography variant="body2" color="text.secondary" mt={1}>
+            Cadastre-se na plataforma para gerenciar tarefas
+          </Typography>
+        </Box>
 
         {error && (
-          <div className="mb-6 p-4 rounded-xl bg-red-950/40 border border-red-500/30 text-red-200 text-sm">
+          <Alert severity="error" sx={{ mb: 3 }}>
             {error}
-          </div>
+          </Alert>
         )}
 
         {successMsg && (
-          <div className="mb-6 p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-200 text-sm">
+          <Alert severity="success" sx={{ mb: 3 }}>
             {successMsg}
-          </div>
+          </Alert>
         )}
 
-        <form onSubmit={handleRegister} className="space-y-5 relative z-10">
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">E-mail</label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
-                <Mail size={18} />
-              </span>
-              <input
-                id="register-email"
-                type="email"
-                required
-                className="w-full bg-slate-950/40 border border-slate-800 rounded-xl py-3 pl-10 pr-4 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                placeholder="seuemail@exemplo.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Senha</label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
-                <KeyRound size={18} />
-              </span>
-              <input
-                id="register-password"
-                type="password"
-                required
-                className="w-full bg-slate-950/40 border border-slate-800 rounded-xl py-3 pl-10 pr-4 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                placeholder="Mínimo 6 caracteres"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Confirmar Senha</label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
-                <KeyRound size={18} />
-              </span>
-              <input
-                id="register-confirm-password"
-                type="password"
-                required
-                className="w-full bg-slate-950/40 border border-slate-800 rounded-xl py-3 pl-10 pr-4 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                placeholder="Repita sua senha"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <button
-            id="register-submit"
+        <Box component="form" onSubmit={handleRegister} sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="register-email"
+            label="E-mail"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Mail size={20} />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Senha"
+            type="password"
+            id="register-password"
+            autoComplete="new-password"
+            placeholder="Mínimo 6 caracteres"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <KeyRound size={20} />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Confirmar Senha"
+            type="password"
+            id="register-confirm-password"
+            placeholder="Repita sua senha"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <KeyRound size={20} />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button
             type="submit"
+            fullWidth
+            variant="contained"
+            size="large"
             disabled={loading}
-            className="w-full bg-primary-600 hover:bg-primary-500 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-primary-600/20 active:scale-[0.98] flex items-center justify-center gap-2"
+            sx={{ mt: 3, mb: 2, py: 1.5, borderRadius: 2 }}
           >
-            {loading ? (
-              <>
-                <Loader2 size={18} className="animate-spin" />
-                Registrando...
-              </>
-            ) : (
-              'Registrar'
-            )}
-          </button>
-        </form>
-
-        <div className="mt-8 text-center text-sm text-slate-400 relative z-10">
-          Já tem uma conta?{' '}
-          <button
-            onClick={navigateToLogin}
-            className="text-primary-400 hover:text-primary-300 font-medium transition-colors"
-          >
-            Faça login
-          </button>
-        </div>
-
-      </div>
-    </div>
+            {loading ? <CircularProgress size={24} color="inherit" /> : 'Registrar'}
+          </Button>
+          
+          <Box textAlign="center" mt={2}>
+            <Typography variant="body2" color="text.secondary">
+              Já tem uma conta?{' '}
+              <Link component="button" type="button" variant="body2" onClick={navigateToLogin} underline="hover" sx={{ fontWeight: 'bold' }}>
+                Faça login
+              </Link>
+            </Typography>
+          </Box>
+        </Box>
+      </Paper>
+    </Container>
   );
 }
