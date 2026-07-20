@@ -9,7 +9,7 @@ class Category(models.Model):
     Model representing task categories created by users.
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_name=100)
+    name = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -28,7 +28,7 @@ class Task(models.Model):
     due dates, ownership, and user sharing capability.
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_name=255)
+    title = models.CharField(max_length=255)
     description = models.TextField(blank=True, default='')
     completed = models.BooleanField(default=False)
     due_date = models.DateField(null=True, blank=True)
