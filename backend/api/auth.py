@@ -1,6 +1,7 @@
 import jwt
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError
 from rest_framework import authentication, exceptions
 
 User = get_user_model()
@@ -47,12 +48,18 @@ class SupabaseJWTAuthentication(authentication.BaseAuthentication):
                 user = User.objects.filter(email__iexact=email).first()
                 if user:
                     # Update username to the Supabase UUID
-                    user.username = user_id
-                    user.save()
+                    try:
+                        user.username = user_id
+                        user.save()
+                    except IntegrityError:
+                        user = User.objects.get(username=user_id)
             
             # If no placeholder was found, create a new user record
             if not user:
-                user = User.objects.create(username=user_id, email=email or '')
+                try:
+                    user = User.objects.create(username=user_id, email=email or '')
+                except IntegrityError:
+                    user = User.objects.get(username=user_id)
         elif email and user.email != email:
             # Update the email in our Django model if it changed in Supabase
             user.email = email
