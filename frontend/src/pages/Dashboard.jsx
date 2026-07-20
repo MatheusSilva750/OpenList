@@ -16,13 +16,13 @@ export default function Dashboard({ user, onLogout, navigateToDocs }) {
         <Header />
 
         {/* Main Layout Grid */}
-        <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
           
           {/* Categories Sidebar */}
           <Sidebar />
 
           {/* Tasks List Content */}
-          <section className="lg:col-span-3 flex flex-col gap-4">
+          <section className="md:col-span-2 lg:col-span-3 flex flex-col gap-4">
             {/* Action Bar (Search & Filter) */}
             <TaskFilters />
 

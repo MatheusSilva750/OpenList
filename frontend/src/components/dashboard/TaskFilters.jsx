@@ -6,9 +6,9 @@ export default function TaskFilters() {
   const { search, setSearch, setPage, statusFilter, setStatusFilter, openTaskModal } = useDashboard();
 
   return (
-    <div className="glass-card p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+    <div className="glass-card p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
       {/* Search Input */}
-      <div className="relative flex-1 min-w-[200px]">
+      <div className="relative w-full md:flex-1 md:min-w-[200px]">
         <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
           <Search size={18} />
         </span>
@@ -21,10 +21,10 @@ export default function TaskFilters() {
         />
       </div>
 
-      {/* Status Filter Toggle */}
-      <div className="flex gap-2">
+      {/* Status Filter & Add Task */}
+      <div className="flex w-full md:w-auto gap-2">
         <select
-          className="bg-slate-950/40 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-1 focus:ring-primary-500 transition-all"
+          className="flex-1 md:flex-none bg-slate-950/40 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-1 focus:ring-primary-500 transition-all"
           value={statusFilter}
           onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
         >
@@ -37,10 +37,11 @@ export default function TaskFilters() {
         <button
           id="add-task-btn"
           onClick={() => openTaskModal()}
-          className="bg-primary-600 hover:bg-primary-500 text-white font-semibold text-sm px-4 py-2 rounded-xl transition-all shadow-lg hover:shadow-primary-600/10 active:scale-95 flex items-center gap-1.5"
+          className="flex-1 md:flex-none justify-center bg-primary-600 hover:bg-primary-500 text-white font-semibold text-sm px-4 py-2 rounded-xl transition-all shadow-lg hover:shadow-primary-600/10 active:scale-95 flex items-center gap-1.5"
         >
           <Plus size={16} />
-          Nova Tarefa
+          <span className="hidden sm:inline">Nova Tarefa</span>
+          <span className="sm:hidden">Nova</span>
         </button>
       </div>
     </div>

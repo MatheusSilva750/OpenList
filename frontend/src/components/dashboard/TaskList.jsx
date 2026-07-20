@@ -35,7 +35,7 @@ export default function TaskList() {
             return (
               <div 
                 key={task.id} 
-                className={`glass-card p-4 rounded-xl border transition-all flex items-start justify-between gap-4 ${
+                className={`glass-card p-4 rounded-xl border transition-all flex flex-col sm:flex-row items-start justify-between gap-4 sm:gap-2 ${
                   task.completed 
                     ? 'border-slate-800/40 bg-slate-900/10 opacity-70' 
                     : overdue 
@@ -45,7 +45,7 @@ export default function TaskList() {
               >
                 
                 {/* Toggle button and task text */}
-                <div className="flex gap-3 flex-1 min-w-0">
+                <div className="flex gap-3 w-full sm:flex-1 min-w-0">
                   <button 
                     onClick={() => handleToggleTask(task.id)}
                     className={`mt-0.5 flex-shrink-0 transition-colors ${
@@ -111,7 +111,7 @@ export default function TaskList() {
                 </div>
 
                 {/* Task Actions */}
-                <div className="flex items-center gap-1 flex-shrink-0">
+                <div className="flex items-center justify-end gap-1 w-full sm:w-auto flex-shrink-0 mt-2 sm:mt-0 pt-2 sm:pt-0 border-t sm:border-0 border-slate-800/40">
                   {/* Share Button (Only if Owner) */}
                   {task.owner_email && task.owner_email.toLowerCase() === user?.email?.toLowerCase() && (
                     <>
