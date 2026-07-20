@@ -23,7 +23,13 @@ class UserSummarySerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    category_details = CategorySerializer(source='category', read_only=True)
+    categories_details = CategorySerializer(source='categories', many=True, read_only=True)
+    categories = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        many=True,
+        required=False,
+        allow_empty=True
+    )
     shared_with = UserSummarySerializer(many=True, read_only=True)
     owner_email = serializers.EmailField(source='user.email', read_only=True)
 
@@ -35,8 +41,8 @@ class TaskSerializer(serializers.ModelSerializer):
             'description', 
             'completed', 
             'due_date', 
-            'category', 
-            'category_details', 
+            'categories', 
+            'categories_details', 
             'owner_email', 
             'shared_with', 
             'created_at', 
@@ -44,10 +50,13 @@ class TaskSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'owner_email', 'shared_with', 'created_at', 'updated_at']
 
-    def validate_category(self, value):
+    def validate_categories(self, value):
         # Ensure that users cannot assign tasks to other users' categories
-        if value and value.user != self.context['request'].user:
-            raise serializers.ValidationError("Category does not belong to the authenticated user.")
+        user = self.context['request'].user
+        if value:
+            for cat in value:
+                if cat.user != user:
+                    raise serializers.ValidationError(f"Category {cat.name} does not belong to the authenticated user.")
         return value
 
     def create(self, validated_data):

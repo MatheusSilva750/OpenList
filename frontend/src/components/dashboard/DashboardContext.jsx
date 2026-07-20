@@ -31,7 +31,7 @@ export const DashboardProvider = ({ children, user, onLogout, navigateToDocs }) 
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
   const [taskDueDate, setTaskDueDate] = useState('');
-  const [taskCatId, setTaskCatId] = useState('');
+  const [taskCatIds, setTaskCatIds] = useState([]);
 
   const [newCatName, setNewCatName] = useState('');
   const [showCatModal, setShowCatModal] = useState(false);
@@ -139,13 +139,13 @@ export const DashboardProvider = ({ children, user, onLogout, navigateToDocs }) 
       setTaskTitle(task.title);
       setTaskDesc(task.description);
       setTaskDueDate(task.due_date || '');
-      setTaskCatId(task.category || '');
+      setTaskCatIds(task.categories || []);
     } else {
       setEditingTask(null);
       setTaskTitle('');
       setTaskDesc('');
       setTaskDueDate('');
-      setTaskCatId('');
+      setTaskCatIds([]);
     }
     setShowTaskModal(true);
   };
@@ -158,7 +158,7 @@ export const DashboardProvider = ({ children, user, onLogout, navigateToDocs }) 
       title: taskTitle.trim(),
       description: taskDesc.trim(),
       due_date: taskDueDate || null,
-      category: taskCatId || null
+      categories: taskCatIds
     };
 
     try {
@@ -226,8 +226,8 @@ export const DashboardProvider = ({ children, user, onLogout, navigateToDocs }) 
     setTaskDesc,
     taskDueDate,
     setTaskDueDate,
-    taskCatId,
-    setTaskCatId,
+    taskCatIds,
+    setTaskCatIds,
     newCatName,
     setNewCatName,
     showCatModal,

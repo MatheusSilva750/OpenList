@@ -85,15 +85,16 @@ export default function TaskList() {
                         {task.title}
                       </Typography>
                       
-                      {/* Category Badge */}
-                      {task.category_details && (
+                      {/* Categories Badges */}
+                      {task.categories_details && task.categories_details.map(cat => (
                         <Chip 
-                          label={task.category_details.name} 
+                          key={cat.id}
+                          label={cat.name} 
                           size="small" 
                           variant="outlined" 
                           sx={{ height: 20, fontSize: '0.65rem', fontWeight: 'bold' }} 
                         />
-                      )}
+                      ))}
 
                       {/* Shared Badge */}
                       {(task.shared_with?.length > 0) && (

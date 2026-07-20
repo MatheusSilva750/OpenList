@@ -26,8 +26,8 @@ export default function TaskModal() {
     setTaskDesc, 
     taskDueDate, 
     setTaskDueDate, 
-    taskCatId, 
-    setTaskCatId, 
+    taskCatIds, 
+    setTaskCatIds, 
     categories 
   } = useDashboard();
 
@@ -79,14 +79,17 @@ export default function TaskModal() {
             />
             
             <FormControl fullWidth>
-              <InputLabel id="task-category-label">Categoria</InputLabel>
+              <InputLabel id="task-category-label">Categorias</InputLabel>
               <Select
                 labelId="task-category-label"
-                label="Categoria"
-                value={taskCatId}
-                onChange={(e) => setTaskCatId(e.target.value)}
+                label="Categorias"
+                multiple
+                value={taskCatIds}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setTaskCatIds(typeof value === 'string' ? value.split(',') : value);
+                }}
               >
-                <MenuItem value=""><em>Nenhuma</em></MenuItem>
                 {categories.map(cat => (
                   <MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
                 ))}

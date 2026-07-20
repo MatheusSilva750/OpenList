@@ -32,11 +32,9 @@ class Task(models.Model):
     description = models.TextField(blank=True, default='')
     completed = models.BooleanField(default=False)
     due_date = models.DateField(null=True, blank=True)
-    category = models.ForeignKey(
-        Category, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
+    categories = models.ManyToManyField(
+        Category,
+        blank=True,
         related_name='tasks'
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_tasks')

@@ -53,7 +53,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         # Filtering by category
         category_id = self.request.query_params.get('category')
         if category_id:
-            queryset = queryset.filter(category_id=category_id)
+            queryset = queryset.filter(categories__id=category_id)
 
         # Search filter
         search = self.request.query_params.get('search')
