@@ -23,6 +23,7 @@ wheels/
 .venv/
 venv/
 ENV/
+.coverage
 
 # Django
 db.sqlite3
