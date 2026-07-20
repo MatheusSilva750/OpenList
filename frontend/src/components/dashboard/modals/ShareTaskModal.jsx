@@ -29,10 +29,12 @@ export default function ShareTaskModal() {
       onClose={() => setSharingTask(null)}
       fullWidth
       maxWidth="sm"
-      PaperProps={{
-        component: 'form',
-        onSubmit: handleShareTask,
-        sx: { borderRadius: 3 }
+      slotProps={{
+        paper: {
+          component: 'form',
+          onSubmit: handleShareTask,
+          sx: { borderRadius: 3 }
+        }
       }}
     >
       <DialogTitle fontWeight="bold">

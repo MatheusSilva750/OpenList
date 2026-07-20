@@ -15,13 +15,15 @@ export default function TaskFilters() {
         value={search}
         onChange={(e) => { setSearch(e.target.value); setPage(1); }}
         sx={{ width: { xs: '100%', md: 'auto' }, flexGrow: { md: 1 } }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Search size={18} />
-            </InputAdornment>
-          ),
-          sx: { borderRadius: 2 }
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search size={18} />
+              </InputAdornment>
+            ),
+            sx: { borderRadius: 2 }
+          }
         }}
       />
 

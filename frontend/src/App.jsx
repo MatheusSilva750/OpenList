@@ -47,7 +47,7 @@ export default function App() {
   if (loading) {
     return (
       <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Box textAlign="center">
+        <Box sx={{ textAlign: 'center' }}>
           <CircularProgress color="primary" sx={{ mb: 2 }} />
           <Typography variant="body2" color="text.secondary">
             Carregando...

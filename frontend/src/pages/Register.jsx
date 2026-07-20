@@ -102,12 +102,14 @@ export default function Register({ onAuthSuccess, navigateToLogin }) {
             autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Mail size={20} />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Mail size={20} />
+                  </InputAdornment>
+                ),
+              },
             }}
           />
           <TextField
@@ -122,12 +124,14 @@ export default function Register({ onAuthSuccess, navigateToLogin }) {
             placeholder="Mínimo 6 caracteres"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <KeyRound size={20} />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <KeyRound size={20} />
+                  </InputAdornment>
+                ),
+              },
             }}
           />
           <TextField
@@ -141,12 +145,14 @@ export default function Register({ onAuthSuccess, navigateToLogin }) {
             placeholder="Repita sua senha"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <KeyRound size={20} />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <KeyRound size={20} />
+                  </InputAdornment>
+                ),
+              },
             }}
           />
           <Button
@@ -160,7 +166,7 @@ export default function Register({ onAuthSuccess, navigateToLogin }) {
             {loading ? <CircularProgress size={24} color="inherit" /> : 'Registrar'}
           </Button>
           
-          <Box textAlign="center" mt={2}>
+          <Box sx={{ textAlign: 'center' }} mt={2}>
             <Typography variant="body2" color="text.secondary">
               Já tem uma conta?{' '}
               <Link component="button" type="button" variant="body2" onClick={navigateToLogin} underline="hover" sx={{ fontWeight: 'bold' }}>

@@ -25,10 +25,12 @@ export default function CategoryModal() {
       onClose={() => setShowCatModal(false)}
       fullWidth
       maxWidth="xs"
-      PaperProps={{
-        component: 'form',
-        onSubmit: handleCreateCategory,
-        sx: { borderRadius: 3 }
+      slotProps={{
+        paper: {
+          component: 'form',
+          onSubmit: handleCreateCategory,
+          sx: { borderRadius: 3 }
+        }
       }}
     >
       <DialogTitle fontWeight="bold">

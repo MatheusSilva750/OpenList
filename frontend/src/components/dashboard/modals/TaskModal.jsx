@@ -37,10 +37,12 @@ export default function TaskModal() {
       onClose={() => setShowTaskModal(false)}
       fullWidth
       maxWidth="sm"
-      PaperProps={{
-        component: 'form',
-        onSubmit: handleSaveTask,
-        sx: { borderRadius: 3 }
+      slotProps={{
+        paper: {
+          component: 'form',
+          onSubmit: handleSaveTask,
+          sx: { borderRadius: 3 }
+        }
       }}
     >
       <DialogTitle fontWeight="bold">
@@ -73,7 +75,7 @@ export default function TaskModal() {
               label="Data Limite"
               type="date"
               fullWidth
-              InputLabelProps={{ shrink: true }}
+              slotProps={{ inputLabel: { shrink: true } }}
               value={taskDueDate}
               onChange={(e) => setTaskDueDate(e.target.value)}
             />

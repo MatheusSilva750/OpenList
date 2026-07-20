@@ -84,7 +84,7 @@ export default function Sidebar() {
                   onClick={() => { setSelectedCat(''); setPage(1); }}
                   sx={{ borderRadius: 2 }}
                 >
-                  <ListItemText primary="Todas" primaryTypographyProps={{ variant: 'body2', fontWeight: selectedCat === '' ? 'bold' : 'normal' }} />
+                  <ListItemText primary="Todas" slotProps={{ primary: { variant: 'body2', fontWeight: selectedCat === '' ? 'bold' : 'normal' } }} />
                   <Chip size="small" label={totalCount} />
                 </ListItemButton>
               </ListItem>
@@ -104,7 +104,7 @@ export default function Sidebar() {
                     onClick={() => { setSelectedCat(cat.id); setPage(1); }}
                     sx={{ borderRadius: 2 }}
                   >
-                    <ListItemText primary={cat.name} primaryTypographyProps={{ variant: 'body2', fontWeight: selectedCat === cat.id ? 'bold' : 'normal', noWrap: true, sx: { pr: 4 } }} />
+                    <ListItemText primary={cat.name} slotProps={{ primary: { variant: 'body2', fontWeight: selectedCat === cat.id ? 'bold' : 'normal', noWrap: true, sx: { pr: 4 } } }} />
                   </ListItemButton>
                 </ListItem>
               ))}
